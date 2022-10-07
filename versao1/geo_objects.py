@@ -48,7 +48,7 @@ class Sphere(Object):
             return None
         
         else:
-            delta = ((self.radius **  2) - (dist_center_to_point_sqrt ** 2 ) ** 1/2)
+            delta = (self.radius**2 - dist_center_to_point_sqrt)**(1/2)
             tl, tr = (t_min - delta, t_min + delta)
 
             if tl > tr:
