@@ -38,15 +38,15 @@ def render(v_res, h_res, square_side, dist, eye, look_at, up, bg_color, objs):
 
     center = eye - (w * dist)
 
+    Q = np.zeros((v_res, h_res, 3))
     array_pixel = np.zeros((v_res, h_res, 3))
 
-    Qzero = center + (1/2 * square_side * (v_res - 1) * v) - (1/2 * square_side * (h_res - 1) * u)
+    Q[0,0] = center + (1/2 * square_side * (v_res - 1) * v) - (1/2 * square_side * (h_res - 1) * u)
 
     for i in range(v_res):
         for j in range(h_res):
-            Qarb = Qzero + (square_side * (j * u)) - (square_side * (i * v))
-            line = Qarb - eye
+            Q[i,j] = Q[0,0] + (square_side * (j * u)) - (square_side * (i * v))
+            line = normalize(Q[i,j] - eye)
             array_pixel[i, j] = filter_two(objs, eye, line, bg_color)
 
-    print(array_pixel)
     return array_pixel / 255

@@ -54,7 +54,6 @@ if __name__ == "__main__":
             objs.append(new_sphere)
 
         # checking if is a triangle
-        # 63 254 210 > A = (-100.0 100.0 -100.0) B = (100.0 100.0 100.0) C = (100.0 100.0 -100.0)
         elif ">" in which_info:
             color, triangle = which_info.split(" > ")
             color_r, color_g, color_b = change_type_string(int, color)
@@ -66,4 +65,5 @@ if __name__ == "__main__":
 
     # call the render here
     image = render(v_res, h_res, square_side, dist, eye, look_at, up, bg_color, objs)
-    plt.imsave("\_versao1\images\placeholder.png", image)
+    plt.imsave("images/ilhas.png", image)
+    
