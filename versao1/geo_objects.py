@@ -1,4 +1,3 @@
-from re import T
 import numpy as np
 
 def projecao(u, v):
@@ -36,7 +35,7 @@ class Plane(Object):
         return "Plane"
 
 class Sphere(Object):
-    def __init__(self, radius, center):
+    def __init__(self, center, radius):
         self.radius = radius
         self.center = center
 
