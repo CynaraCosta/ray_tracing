@@ -83,7 +83,7 @@ class Triangle(Object):
         self.hc =  np.dot(((np.dot(hc, hc)) ** -1), hc)
 
     def intersection(self, point_O, vector_d):
-        normal_triangle = np.dot(self.point_a, self.point_b)
+        normal_triangle = np.cross(self.point_a, self.point_b)
         triangle_plane = Plane(self.point_a, normal_triangle, point_O, vector_d)
 
         t = triangle_plane.intersection(point_O, vector_d)
