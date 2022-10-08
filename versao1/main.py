@@ -60,10 +60,10 @@ if __name__ == "__main__":
             point_a_x, point_a_y, point_a_z, point_b_x, point_b_y, point_b_z, point_c_x, point_c_y, point_c_z = change_type_string(float, triangle)
 
             new_triangle = Triangle((point_a_x, point_a_y, point_a_z), (point_b_x, point_b_y, point_b_z), (point_c_x, point_c_y, point_c_z))
-            new_triangle.set_color = ((color_r, color_g, color_b))
+            new_triangle.set_color((color_r, color_g, color_b))
             objs.append(new_triangle)
 
     # call the render here
     image = render(v_res, h_res, square_side, dist, eye, look_at, up, bg_color, objs)
-    plt.imsave("images/olho.png", image)
+    plt.imsave("images/suzanne.png", image)
     

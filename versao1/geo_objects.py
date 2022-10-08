@@ -68,38 +68,39 @@ class Sphere(Object):
 
 class Triangle(Object):
     def __init__(self, point_a, point_b, point_c):
-        self.point_a = point_a
-        self.point_b = point_b
-        self.point_c = point_c
+        self.point_a = np.array(point_a)
+        point_b = np.array(point_b)
+        point_c = np.array(point_c)
 
-        self.vector_u = point_b - point_a
-        self.vector_v = point_c - point_a
+        vector_u = point_b - point_a
+        vector_v = point_c - point_a
 
-        hb = self.vector_u - projecao(self.vector_u, self.vector_v)
-        hc = self.vector_v - projecao(self.vector_v, self.vector_u)
+        self.plane = Plane(self.point_a, np.cross(vector_u, vector_v))
+
+        hb = vector_u - projecao(vector_u, vector_v)
+        hc = vector_v - projecao(vector_v, vector_u)
 
         self.hb = np.dot(((np.dot(hb, hb)) ** -1), hb)
         self.hc =  np.dot(((np.dot(hc, hc)) ** -1), hc)
 
     def intersection(self, point_O, vector_d):
-        normal_triangle = np.cross(self.point_a, self.point_b)
-        triangle_plane = Plane(self.point_a, normal_triangle, point_O, vector_d)
+        t = self.plane.intersection(point_O, vector_d)
 
-        t = triangle_plane.intersection(point_O, vector_d)
+        if t != None:
+            point_p = point_O + (vector_d * t)
+            vector_v = point_p - self.point_a
 
-        point_p = point_O + (vector_d * t)
-        vector_v = point_p - self.point_a
+            beta = np.dot(vector_v, self.hb)
+            gama = np.dot(vector_v, self.hc)
+            alfa = 1 - (beta + gama)
 
-        beta = np.dot(vector_v, self.hb)
-        gama = np.dot(vector_v, self.hc)
-        alfa = 1 - (beta + gama)
-
-        if 0 <= alfa <= 1 and 0 <= beta <= 1 and  0 <= gama <= 1:
-            # there is intersection
-            return t
+            if 0 <= alfa <= 1 and 0 <= beta <= 1 and  0 <= gama <= 1:
+                # there is intersection
+                return t
         
         # there is no intersection
-        return None
+        else: 
+            return None
 
     def __str__(self):
         return "Triangle"
