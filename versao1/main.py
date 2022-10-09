@@ -65,5 +65,5 @@ if __name__ == "__main__":
 
     # call the render here
     image = render(v_res, h_res, square_side, dist, eye, look_at, up, bg_color, objs)
-    plt.imsave("images/suzanne.png", image)
+    plt.imsave("images/cone.png", image)
     
