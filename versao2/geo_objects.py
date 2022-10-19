@@ -11,6 +11,12 @@ class Object:
     def set_color(self, rgb):
         self.color = np.array(rgb)
 
+    def set_lights(self, Ka, Kd, Ks, n):
+        self.Ka = Ka
+        self.Kd = Kd
+        self.Ks = Ks
+        self.n = n
+
 class Plane(Object):
     def __init__(self, point, normal_vector):
         self.point = np.array(point)
@@ -30,6 +36,11 @@ class Plane(Object):
     
         # not intersection
         return None
+
+    def normal(self, point):
+        result = (self.normal_vector) / np.linalg.norm(self.normal_vector)
+        return result
+
 
     def __str__(self):
         return "Plane"
@@ -62,6 +73,10 @@ class Sphere(Object):
             
             else: 
                 return tl
+
+    def normal(self, point):
+        result = (point - self.center) / np.linalg.norm(point - self.center)
+        return result
 
     def __str__(self):
         return "Sphere"
@@ -101,6 +116,10 @@ class Triangle(Object):
         # there is no intersection
         else: 
             return None
+
+    def normal(self, point):
+        result = (self.plane.normal_vector) / np.linalg.norm(self.plane.normal_vector)
+        return result
 
     def __str__(self):
         return "Triangle"
