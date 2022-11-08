@@ -9,7 +9,7 @@ class Object:
     # class to store the colors from a object
     # np.array gets tuple to turn the values into a array
     def set_color(self, rgb):
-        self.color = np.array(rgb)
+        self.color = rgb
 
     def set_lights(self, Ka, Kd, Ks, n):
         self.Ka = Ka
