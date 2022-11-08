@@ -8,16 +8,18 @@ def reflect(l, n):
     result = 2 * n * (np.dot(l, n)) - l 
     return result
 
-def filter_one(objs, point_O, vector_d):
-    interceptions = []
+def nearest(objs, point_O, vector_d):
+    closest = None
+    t_min = np.inf # numero mt grande para identificar que n ha interseccoes
 
     for obj in objs:
         t = obj.intersection(point_O, vector_d)
 
-        if t:
-            # if there is a interception, is going to return the locate = t and which obj it is
-            interceptions.append((t, obj))
-    return interceptions
+        if t and t < t_min:
+            closest = obj
+            t_min = t
+    
+    return t_min, closest
 
 def shade(obj, objs, P, vector_d, normal_obj_p, lights, ca):
     
@@ -28,14 +30,9 @@ def shade(obj, objs, P, vector_d, normal_obj_p, lights, ca):
 
         new_point = P + 10E-5*lj
 
-        S = filter_one(objs, new_point, lj)
-        S.sort()
+        t, shadow = nearest(objs, new_point, lj)
 
-        t = 0
-        if len(S) != 0:
-            t, obj = S[0]
-
-        if len(S) == 0 or (np.dot(lj, (Lj - new_point)) < t):
+        if  not shadow or (np.dot(lj, (Lj - new_point)) < t):
             if np.dot(normal_obj_p,lj) > 0:
                 final_color_point = final_color_point + ((obj.Kd*obj.color) * np.dot(normal_obj_p,lj) * cj)
 
@@ -46,16 +43,12 @@ def shade(obj, objs, P, vector_d, normal_obj_p, lights, ca):
 
 def filter_two(objs, point_O, vector_d, bg_color, ca, lights): # cast
     color_to_return = bg_color
-    interceptions = filter_one(objs, point_O, vector_d)
+    t, closest = nearest(objs, point_O, vector_d)
 
-    # sorting to see which is the closest object
-    interceptions.sort()
-
-    if len(interceptions) != 0:
-        # if there is objects at the screen we are going to get this object and see his color
-        t, obj = interceptions[0]
+    if closest:
         point = point_O + (t*vector_d)
-        color_to_return = shade(obj, objs, point, -1 * vector_d, obj.normal(point), lights, ca)
+        color_to_return = shade(closest, objs, point, -vector_d, closest.normal(point), lights, ca)
+
 
     # we are going to return this color, because if there is no obj is going to be the bg_color, otherwise the obj_color
     return color_to_return
