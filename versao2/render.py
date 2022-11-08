@@ -32,7 +32,7 @@ def shade(obj, objs, P, vector_d, normal_obj_p, lights, ca):
 
         t, shadow = nearest(objs, new_point, lj)
 
-        if  not shadow or (np.dot(lj, (Lj - new_point)) < t):
+        if  not shadow or (np.dot(lj, (Lj - new_point)) < t): # not shadow = n intercepta c nenhum objeto portanto n ta na sombra
             if np.dot(normal_obj_p,lj) > 0:
                 final_color_point = final_color_point + ((obj.Kd*obj.color) * np.dot(normal_obj_p,lj) * cj)
 
@@ -45,7 +45,7 @@ def filter_two(objs, point_O, vector_d, bg_color, ca, lights): # cast
     color_to_return = bg_color
     t, closest = nearest(objs, point_O, vector_d)
 
-    if closest:
+    if closest: # quando intercepta, portanto não vai ficar com cor de fundo e sim com uma cor definida = color_to_return
         point = point_O + (t*vector_d)
         color_to_return = shade(closest, objs, point, -vector_d, closest.normal(point), lights, ca)
 
