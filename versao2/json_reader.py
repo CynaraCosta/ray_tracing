@@ -11,17 +11,17 @@ def getting_points(lista, data):
     point_c = []
     count = 0
 
-    for lista in data:
+    for point in lista:
         if count == 0:
-            point_a = lista
+            point_a = point
             count += 1
-
+        
         elif count == 1:
-            point_b = lista
+            point_b = point
             count += 1
 
         else:
-            point_c = lista
+            point_c = point
 
     return point_a, point_b, point_c
 
@@ -69,5 +69,5 @@ def get_path_and_infos(name):
         for light in data["lights"]:
             lights.append((np.array(light["intensity"])/255, np.array(light["position"])))
         
-        image = render.render(v_res, h_res, square_side, dist, eye, look_at, up, background_color, objects, ca, lights)
+        image = render.render(v_res, h_res, square_side, dist, eye, look_at, up, background_color, objects, lights, ca)
         plt.imsave(f"images/{name}.png", image)

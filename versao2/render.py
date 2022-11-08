@@ -1,4 +1,3 @@
-from asyncio.windows_events import NULL
 import numpy as np
 from geo_objects import Plane, Sphere, Triangle
 
@@ -7,6 +6,7 @@ def normalize(vector):
 
 def reflect(l, n):
     result = 2 * n * (np.dot(l, n)) - l 
+    return result
 
 def filter_one(objs, point_O, vector_d):
     interceptions = []
@@ -20,6 +20,7 @@ def filter_one(objs, point_O, vector_d):
     return interceptions
 
 def shade(obj, objs, P, vector_d, normal_obj_p, lights, ca):
+    
     final_color_point = obj.Ka * ca * obj.color
     for cj, Lj in lights:
         lj = normalize(Lj - P)
@@ -64,13 +65,13 @@ def render(v_res, h_res, square_side, dist, eye, look_at, up, background_color, 
     u = normalize(np.cross(up, w))
     v = np.cross(w, u)
 
-    # center = eye - (w * dist)
+    center = eye - (w * dist)
 
     Q = np.zeros((v_res, h_res, 3))
     # array_pixel = np.zeros((v_res, h_res, 3))
     img = np.full((v_res, h_res, 3), background_color)
 
-    Q[0,0] = eye + (1/2 * square_side * (v_res - 1) * v) - (1/2 * square_side * (h_res - 1) * u)
+    Q[0,0] = center + (1/2 * square_side * (v_res - 1) * v) - (1/2 * square_side * (h_res - 1) * u)
 
     for i in range(v_res):
         for j in range(h_res):
@@ -80,6 +81,6 @@ def render(v_res, h_res, square_side, dist, eye, look_at, up, background_color, 
             placeH = filter_two(objs, eye, line, background_color, ca, lights)
             placeH = placeH/max(*placeH, 1)
 
-            img[i][j] = placeH            
+            img[i][j] = placeH       
 
     return img 
