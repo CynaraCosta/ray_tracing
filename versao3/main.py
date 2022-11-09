@@ -11,4 +11,4 @@ def change_type_string(Type, string):
     return map(Type, string.split())
 
 if __name__ == "__main__":
-    get_path_and_infos("espelho1")
+    get_path_and_infos("newton")

@@ -63,16 +63,16 @@ def filter_two(objs, point_O, vector_d, bg_color, ca, lights,ttl,e=10E-5): # cas
         v = -vector_d
         n = closest.normal(point)
         color_to_return = shade(closest, objs, point, v, n, lights, ca)
-        if ttl > 0:
+        if ttl != 0:
             Rr = reflect(v, n)
             Pr = point + Rr*e
             try:
-                if closest.kt > 0:
+                if closest.Kt > 0:
                     Rt = refract(closest, v, n)
                     Pt = point + e*Rt
-                    color_to_return = color_to_return + closest.kt * filter_two(objs,Pt,Rt,color_to_return,ca,lights,ttl-1)
-                if closest.kr > 0:
-                    color_to_return = color_to_return + closest.kr * filter_two(objs,Pr,Rr,color_to_return,ca,lights,ttl-1)
+                    color_to_return = color_to_return + closest.Kt * filter_two(objs,Pt,Rt,color_to_return,ca,lights,ttl-1)
+                if closest.Kr > 0:
+                    color_to_return = color_to_return + closest.Kr * filter_two(objs,Pr,Rr,color_to_return,ca,lights,ttl-1)
             except:
                 color_to_return = color_to_return + filter_two(objs,Pr,Rr,color_to_return,ca,lights,ttl-1)
 
