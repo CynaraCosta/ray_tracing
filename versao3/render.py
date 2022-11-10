@@ -9,19 +9,24 @@ def reflect(l, n):
     return result
 
 def refract(obj, v, n):
+    #Cálculo do coseno do ângulo de incidência
+    normal = n
     cos = np.dot(n,v)
-    ior = obj.Nr
+    #Índice de refração relativo
+    irr = obj.Nr
 
+    #Se o ângulo for obtuso
     if cos < 0:
-        n *= -1
-        ior = 1/ior
+        normal *= -1
+        irr = 1/irr # Invertido os meios
         cos *= -1
 
-    delta = 1 - ((1/(ior**2)) * (1 - cos**2))
+    delta = 1 - ((1/(irr**2)) * (1 - cos**2))
+    # Se for uma reflexão total:
     if delta < 0:
         raise Exception ('Total Internal Reflection Exception')
-    
-    return (-1/ior * v) - (np.sqrt(delta) - (1/ior * cos))*n 
+    # Cálculo do raio refratado
+    return (-1/irr * v) - (np.sqrt(delta) - (1/irr * cos))*normal 
 
 def nearest(objs, point_O, vector_d):
     closest = None
@@ -55,10 +60,10 @@ def shade(obj, objs, P, vector_d, normal_obj_p, lights, ca):
 
     return final_color_point
 
-def filter_two(objs, point_O, vector_d, bg_color, ca, lights,ttl,e=10E-5): # cast
+def filter_two(objs, point_O, vector_d, bg_color, ca, lights,ttl,e=10E-5):
     color_to_return = bg_color
     t, closest = nearest(objs, point_O, vector_d)
-    if closest: # quando intercepta, portanto não vai ficar com cor de fundo e sim com uma cor definida = color_to_return
+    if closest: 
         point = point_O + (t*vector_d)
         v = -vector_d
         n = closest.normal(point)
@@ -77,7 +82,6 @@ def filter_two(objs, point_O, vector_d, bg_color, ca, lights,ttl,e=10E-5): # cas
                 color_to_return = color_to_return + filter_two(objs,Pr,Rr,color_to_return,ca,lights,ttl-1)
 
 
-    # we are going to return this color, because if there is no obj it's going to be the bg_color, otherwise the obj_color
     return color_to_return
 
 def render(v_res, h_res, square_side, dist, eye, look_at, up, background_color, objs, lights, ca, depth):
